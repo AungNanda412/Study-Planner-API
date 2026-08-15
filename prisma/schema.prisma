@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Student { 
+  id              Int             @id @default(autoincrement())
+  name            String 
+  email           String          @unique
+  password        String
+  courses         Course[]
+  studySessions   StudySession[]
+  assignments     Assignment[]
+  createAt        DateTime        @default(now())
+} 
+
+model Course { 
+  id            Int             @id @default(autoincrement()) 
+  title         String
+  description   String?
+  student       Student         @relation(fields: [studentId], references: [id]) 
+  studentId     Int
+  topics        Topic[]
+  sessions      StudySession[]
+  assignments   Assignment[]
+  createAt      DateTime        @default(now())
+}
+
+model Topic {
+  id          Int      @id @default(autoincrement())
+  name        String
+  completed   Boolean  @default(false)
+  course      Course   @relation(fields: [courseId], references: [id])
+  courseId    Int
+}
+
+model StudySession {
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  duration    Int
+  notes       String?
+  student     Student     @relation(fields: [studentId], references: [id])
+  course      Course      @relation(fields: [courseId], references: [id])
+  studentId   Int
+  courseId    Int
+}
+
+model Assignment {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  dueDate     DateTime
+  priority    String
+  completed   Boolean  @default(false)
+  student     Student  @relation(fields: [studentId], references: [id])
+  course      Course   @relation(fields: [courseId], references: [id])
+  studentId   Int
+  courseId    Int
+}
