@@ -4,6 +4,7 @@ import express from "express";
 import { prisma } from "../../lib/prisma";
 import jwt from "jsonwebtoken";
 import { auth } from "../../middlewares/auth";
+import { createStudent } from "../../controllers/studentController";
 
 export const studentRouter = express.Router();
 
@@ -65,3 +66,6 @@ studentRouter.post("/login", async (req, res) => {
   }
   return res.status(401).json({ msg: "Unable to login" });
 });
+
+
+studentRouter.post("/students", auth, createStudent);
