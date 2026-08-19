@@ -1,10 +1,8 @@
-import bcrypt from "bcrypt";
-import { Router } from "express";
 import express from "express";
 import { prisma } from "../../lib/prisma";
 import jwt from "jsonwebtoken";
 import { auth } from "../../middlewares/auth";
-import { createStudent } from "../../controllers/studentController";
+import { createStudent, loginStudent } from "../../controllers/studentController";
 
 export const studentRouter = express.Router();
 
@@ -40,32 +38,7 @@ studentRouter.get("/students/:id", auth, async (req, res) => {
   res.json(student);
 });
 
-studentRouter.post("/login", async (req, res) => {
-  const email = req.body?.email;
-  const password = req.body?.password;
-
-  if (!email || !password) {
-    return res.status(400).json({ msg: "email and password are required" });
-  }
-
-  const student = await prisma.student.findFirst({
-    where: { email },
-  });
-
-  if (student) {
-    if (await bcrypt.compare(password, student.password)) {
-      const token = jwt.sign(
-        { id: student.id },
-        process.env.JWT_SECRET as string,
-      );
-
-      return res.json({ student, token });
-    } else {
-      return res.status(401).json({ msg: "Invalid password or email" });
-    }
-  }
-  return res.status(401).json({ msg: "Unable to login" });
-});
+studentRouter.post("/login", loginStudent );
 
 
 studentRouter.post("/students", auth, createStudent);

@@ -1,12 +1,15 @@
-import { AssignmentType } from "./assignmentTypes"
-import { CourseType } from "./courseTypes"
+import { AssignmentType } from "./assignmentTypes";
+import { CourseType } from "./courseTypes";
 
 export type StudentType = {
-    name: string,
-    email: string,
-    password: string
-}
+  name: string;
+  email: string;
+  password: string;
+};
 
-export type StudySessionType = {
-    
-}
+export type StudySessionType = {};
+
+export type LoginType = {
+  email: string;
+  password: string;
+};
