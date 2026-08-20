@@ -20,7 +20,7 @@ model Student {
   courses         Course[]
   studySessions   StudySession[]
   assignments     Assignment[]
-  createAt        DateTime        @default(now())
+  createdAt        DateTime        @default(now())
 } 
 
 model Course { 
@@ -32,7 +32,7 @@ model Course {
   topics        Topic[]
   sessions      StudySession[]
   assignments   Assignment[]
-  createAt      DateTime        @default(now())
+  createdAt      DateTime        @default(now())
 }
 
 model Topic {
@@ -57,6 +57,7 @@ model StudySession {
 model Assignment {
   id          Int      @id @default(autoincrement())
   title       String
+  short_name  String
   description String?
   dueDate     DateTime
   priority    String

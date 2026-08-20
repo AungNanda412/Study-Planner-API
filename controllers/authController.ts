@@ -1,14 +1,12 @@
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import {
-  createStudentService,
-  getStudent,
-  getStudentById,
-  loginStudentService,
-} from "../services/studentService";
+  loginService,
+  registerService,
+} from "../services/authService";
 import { prisma } from "../lib/prisma";
 
-export async function createStudent(req: Request, res: Response) {
+export async function register(req: Request, res: Response) {
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
@@ -18,7 +16,7 @@ export async function createStudent(req: Request, res: Response) {
   }
 
   try {
-    const student = await createStudentService({
+    const student = await registerService({
       name,
       email,
       password,
@@ -33,7 +31,7 @@ export async function createStudent(req: Request, res: Response) {
   }
 }
 
-export async function loginStudent(req: Request, res: Response) {
+export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -41,7 +39,7 @@ export async function loginStudent(req: Request, res: Response) {
   }
 
   try {
-    const result = await loginStudentService({ email, password });
+    const result = await loginService({ email, password });
 
     return res.json(result);
   } catch (error: unknown) {
@@ -52,32 +50,32 @@ export async function loginStudent(req: Request, res: Response) {
   }
 }
 
-export async function showStudentDetail(req: Request, res: Response) {
-  const { id } = req.params;
+// export async function showStudentDetail(req: Request, res: Response) {
+//   const { id } = req.params;
 
-  try {
-    const student = await getStudentById(id as string);
+//   try {
+//     const student = await getStudentById(id as string);
 
-    return res.json(student);
-  } catch (error) {
-    return res.status(500).json({
-      msg: "Something went wrong",
-    });
-  }
-}
+//     return res.json(student);
+//   } catch (error) {
+//     return res.status(500).json({
+//       msg: "Something went wrong",
+//     });
+//   }
+// }
 
-export async function showStudent(req: Request, res: Response) {
-  try {
-    const student = await getStudent();
-    return res.status(200).json(student);
-  } catch (error) {
-    return res.status(500).json({
-      msg: "Something went wrong",
-    });
-  }
-}
+// export async function showStudent(req: Request, res: Response) {
+//   try {
+//     const student = await getStudent();
+//     return res.status(200).json(student);
+//   } catch (error) {
+//     return res.status(500).json({
+//       msg: "Something went wrong",
+//     });
+//   }
+// }
 
-export async function verifyStudent(req: Request, res: Response) {
+export async function verify(req: Request, res: Response) {
   const student = res.locals.student
   
   res.status(200).json(student)

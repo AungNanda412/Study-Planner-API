@@ -1,10 +1,7 @@
-import { AssignmentType } from "./assignmentTypes"
-import { StudentType } from "./studentTypes"
+import { AssignmentType } from "./assignmentTypes";
 
-export type CourseType = {
-    id: number,
-    name: string,
-    description: string,
-    students: StudentType[],
-    assignments: AssignmentType[]
-}
+export type CourseCreateType = {
+  title: string;
+  description: string;
+  studentId: number;
+};

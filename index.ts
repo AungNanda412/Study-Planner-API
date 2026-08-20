@@ -1,14 +1,15 @@
 import express from "express";
-import { studentRouter } from "./prisma/routes/student";
+import { authRouter } from "./prisma/routes/auth";
 import cors from "cors";
+import { topicRouter } from "./prisma/routes/topic";
 
 const app = express();
 app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use(studentRouter)
-
+app.use("/api/auth",authRouter)
+app.use(topicRouter)
 
 app.get("/", (req, res) => {
   res.json({ project: "Study Planner", message: "running..." });
