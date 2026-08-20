@@ -6,5 +6,5 @@ import { showTopic } from '../../controllers/topicController';
 
 export const topicRouter = express.Router();
 
-topicRouter.get("/topics",auth, showTopic)
+topicRouter.get("/",auth, showTopic)
 
