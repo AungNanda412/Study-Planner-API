@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import {
   createStudentService,
+  getStudent,
+  getStudentById,
   loginStudentService,
 } from "../services/studentService";
 import { prisma } from "../lib/prisma";
@@ -48,4 +50,35 @@ export async function loginStudent(req: Request, res: Response) {
     }
     return res.status(500).json({ msg: "Something went wrong" });
   }
+}
+
+export async function showStudentDetail(req: Request, res: Response) {
+  const { id } = req.params;
+
+  try {
+    const student = await getStudentById(id as string);
+
+    return res.json(student);
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Something went wrong",
+    });
+  }
+}
+
+export async function showStudent(req: Request, res: Response) {
+  try {
+    const student = await getStudent();
+    return res.status(200).json(student);
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Something went wrong",
+    });
+  }
+}
+
+export async function verifyStudent(req: Request, res: Response) {
+  const student = res.locals.student
+  
+  res.status(200).json(student)
 }

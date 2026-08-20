@@ -36,8 +36,29 @@ export async function loginStudentService({ email, password }: LoginType) {
     } else {
       throw new Error("Invalid password");
     }
-
   } else {
     throw new Error("Unable to login");
   }
+}
+
+export async function getStudentById(id: string) {
+  const student = await prisma.student.findFirst({
+    where: { id: Number(id) },
+    include: {
+      courses: true,
+      assignments: true,
+      studySessions: true,
+    },
+  });
+  return student;
+}
+
+export async function getStudent() {
+  const students = await prisma.student.findMany({
+    include: {
+      courses: true,
+    },
+  });
+
+  return students
 }
