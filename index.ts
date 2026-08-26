@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRouter);
 app.use("/api/courses", courseRouter);
-app.use("/api/topic", topicRouter);
+app.use("/api/courses", topicRouter);
 
 app.get("/", (req, res) => {
   res.json({ project: "Study Planner", message: "running..." });

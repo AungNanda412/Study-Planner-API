@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { getTopic } from "../services/topicService";
+import { createTopicService, getTopic } from "../services/topicService";
+import { prisma } from "../lib/prisma";
 
 export async function showTopic(req: Request, res: Response) {
   try {
@@ -12,7 +13,29 @@ export async function showTopic(req: Request, res: Response) {
   }
 }
 
-export async function createTopicService(req: Request, res: Response) {
-    
+export async function createTopic(req: Request, res: Response) {
+  try {
+    const { courseId } = req.params;
+    const { name } = req.body;
+    const studentId = res.locals.student.id;
 
+    if (!name) {
+      res.status(400).json({
+        msg: "Name is required",
+      });
+    }
+
+    const topic = await createTopicService({
+      name,
+      courseId: Number(courseId),
+      studentId,
+    });
+
+    return res.status(201).json({ msg: "Topic created successfully", topic });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return res.status(500).json({ msg: error.message });
+    }
+    return res.status(500).json({ msg: "Unable to create course" });
+  }
 }

@@ -1,7 +1,11 @@
 import { AssignmentType } from "./assignmentTypes";
 
-export type CourseCreateType = {
+export type CourseCreateInput = {
   title: string;
   description: string;
   studentId: number;
 };
+
+export type CourseType = {
+  id: number
+}

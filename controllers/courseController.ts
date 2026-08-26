@@ -21,10 +21,6 @@ export async function createCourse(req: Request, res: Response) {
     return res.status(400).json({ msg: "title is required" });
   }
 
-  if (!studentId) {
-    return res.status(401).json({ msg: "Unauthorized" });
-  }
-
   try {
     const course = await createCourseService({
       title,

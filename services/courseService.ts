@@ -1,5 +1,5 @@
 import { prisma } from "../lib/prisma";
-import { CourseCreateType } from "../types/courseTypes";
+import { CourseCreateInput } from "../types/courseTypes";
 
 export async function getCourse() {
   const courses = prisma.course.findMany({
@@ -20,7 +20,7 @@ export async function createCourseService({
   title,
   description,
   studentId,
-}: CourseCreateType) {
+}: CourseCreateInput) {
 
     const course = await prisma.course.create({
         data:{
