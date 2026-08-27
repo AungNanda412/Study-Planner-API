@@ -18,6 +18,14 @@ export async function auth(
       if (decoded) {
         const student = await prisma.student.findFirst({
           where: { id: decoded.id },
+          include: {
+            courses: {
+              include: {
+                topics: true,
+              },
+            },
+            assignments: true,
+          },
         });
 
         res.locals.student = student;

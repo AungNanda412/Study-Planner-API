@@ -7,5 +7,12 @@ export type CourseCreateInput = {
 };
 
 export type CourseType = {
-  id: number
-}
+  id: number;
+};
+
+export type CourseUpdateInput = {
+  title: string;
+  description?: string;
+  courseId: number;
+  studentId: number;
+};

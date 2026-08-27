@@ -1,9 +1,18 @@
 import express from "express";
-import { createCourse, showCourse } from "../../controllers/courseController";
+import {
+  createCourse,
+  showCourseDetail,
+  showCourses,
+  updateCourse,
+} from "../../controllers/courseController";
 import { auth } from "../../middlewares/auth";
 
 export const courseRouter = express.Router();
 
-courseRouter.get("/", auth, showCourse);
+courseRouter.get("/", auth, showCourses);
 
-courseRouter.post("/", auth, createCourse); 
+courseRouter.get("/:courseId", auth, showCourseDetail);
+
+courseRouter.patch("/:courseId", auth, updateCourse);
+
+courseRouter.post("/", auth, createCourse);
