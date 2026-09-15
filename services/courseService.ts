@@ -84,3 +84,31 @@ export async function updateCourseService({
 
   return updatedCourse;
 }
+
+export async function deleteCourseService(id: number, studentId: number) {
+  const course = await prisma.course.findFirst({
+    where: {
+      id,
+      studentId,
+    },
+  });
+
+  if (!course) {
+    throw new Error("COURSE_NOT_FOUND");
+  }
+
+  const deleteTopic = await prisma.topic.deleteMany({
+    where: {
+      courseId: id,
+    },
+  });
+
+  const deleteCourse = await prisma.course.delete({
+    where: {
+      id,
+      studentId,
+    },
+  });
+
+  return deleteCourse;
+}

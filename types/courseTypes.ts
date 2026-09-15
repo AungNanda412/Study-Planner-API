@@ -11,7 +11,7 @@ export type CourseType = {
 };
 
 export type CourseUpdateInput = {
-  title: string;
+  title?: string;
   description?: string;
   courseId: number;
   studentId: number;

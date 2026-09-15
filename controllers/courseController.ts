@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   createCourseService,
+  deleteCourseService,
   getCourse,
   getCourseDetail,
   updateCourseService,
@@ -81,6 +82,21 @@ export async function updateCourse(req: Request, res: Response) {
     return res
       .status(200)
       .json({ msg: "Course updated successfully", updatedCourse });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return res.status(500).json({ msg: error.message });
+    }
+    return res.status(500).json({ msg: "Something went wrong" });
+  }
+}
+
+export async function deleteCourse(req: Request, res: Response) {
+  const { courseId } = req.params;
+  const studentId = res.locals.student.id;
+
+  try {
+    const deleteCourse = await deleteCourseService(Number(courseId), studentId);
+    return res.status(200).json({ msg: "Course deleted successfully" });
   } catch (error: unknown) {
     if (error instanceof Error) {
       return res.status(500).json({ msg: error.message });

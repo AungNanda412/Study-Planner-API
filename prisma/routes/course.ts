@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createCourse,
+  deleteCourse,
   showCourseDetail,
   showCourses,
   updateCourse,
@@ -16,3 +17,5 @@ courseRouter.get("/:courseId", auth, showCourseDetail);
 courseRouter.patch("/:courseId", auth, updateCourse);
 
 courseRouter.post("/", auth, createCourse);
+
+courseRouter.delete("/:courseId", auth, deleteCourse);
