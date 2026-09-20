@@ -14,6 +14,7 @@ export async function auth(
       const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
         id: number;
       };
+      console.log("DECODED:", decoded);
 
       if (decoded) {
         const student = await prisma.student.findFirst({
@@ -22,18 +23,20 @@ export async function auth(
             courses: {
               include: {
                 topics: true,
+                assignments: true,
+                sessions: true,
               },
             },
-            assignments: true,
           },
         });
+        console.log("STUDENT:", student);
 
         res.locals.student = student;
         return next();
       }
     } catch (error) {
-      return res.status(401).json({
-        msg: "Invalid or expired token",
+      return res.status(500).json({
+        msg: error instanceof Error ? error.message : "Unknown error",
       });
     }
   } else {

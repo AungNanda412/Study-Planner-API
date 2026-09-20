@@ -19,7 +19,6 @@ model Student {
   password        String
   courses         Course[]
   studySessions   StudySession[]
-  assignments     Assignment[]
   createdAt        DateTime        @default(now())
 } 
 
@@ -62,8 +61,6 @@ model Assignment {
   dueDate     DateTime
   priority    String
   completed   Boolean  @default(false)
-  student     Student  @relation(fields: [studentId], references: [id])
   course      Course   @relation(fields: [courseId], references: [id])
-  studentId   Int
   courseId    Int
 }

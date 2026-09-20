@@ -14,7 +14,7 @@ authRouter.post("/verify", auth, verify);
 
 authRouter.post("/login", login);
 
-authRouter.post("/register", auth, register);
+authRouter.post("/register", register);
 
 
 
