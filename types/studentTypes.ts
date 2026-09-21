@@ -1,4 +1,3 @@
-import { AssignmentType } from "./assignmentTypes";
 
 
 export type registerType = {

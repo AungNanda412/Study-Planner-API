@@ -1,10 +1,8 @@
-import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import {
   loginService,
   registerService,
 } from "../services/authService";
-import { prisma } from "../lib/prisma";
 
 export async function register(req: Request, res: Response) {
   const { name, email, password } = req.body;

@@ -1,5 +1,6 @@
 export type TopicCreateInput = {
   name: string;
+  completed?: boolean;
   courseId: number;
   studentId: number;
 };

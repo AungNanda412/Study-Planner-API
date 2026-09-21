@@ -21,7 +21,7 @@ export async function showTopic(req: Request, res: Response) {
 export async function createTopic(req: Request, res: Response) {
   try {
     const { courseId } = req.params;
-    const { name } = req.body;
+    const { name,completed } = req.body;
     const studentId = res.locals.student.id;
 
     if (!name) {
@@ -32,6 +32,7 @@ export async function createTopic(req: Request, res: Response) {
 
     const topic = await createTopicService({
       name,
+      completed,
       courseId: Number(courseId),
       studentId,
     });

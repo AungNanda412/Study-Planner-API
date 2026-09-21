@@ -15,6 +15,7 @@ export async function getTopic() {
 
 export async function createTopicService({
   name,
+  completed,
   courseId,
   studentId,
 }: TopicCreateInput) {
@@ -32,6 +33,7 @@ export async function createTopicService({
   const topic = await prisma.topic.create({
     data: {
       name,
+      completed,
       courseId: course.id,
     },
   });

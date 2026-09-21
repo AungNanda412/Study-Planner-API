@@ -3,6 +3,7 @@ import { authRouter } from "./prisma/routes/auth";
 import cors from "cors";
 import { topicRouter } from "./prisma/routes/topic";
 import { courseRouter } from "./prisma/routes/course";
+import { assignmentRouter } from "./prisma/routes/assignment";
 
 const app = express();
 app.use(cors());
@@ -12,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRouter);
 app.use("/api/courses", courseRouter);
 app.use("/api/courses", topicRouter);
+app.use("/api/courses", assignmentRouter);
 
 app.get("/", (req, res) => {
   res.json({ project: "Study Planner", message: "running..." });
