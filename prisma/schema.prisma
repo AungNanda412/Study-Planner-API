@@ -53,13 +53,19 @@ model StudySession {
   courseId    Int
 }
 
+enum Priority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
 model Assignment {
   id          Int      @id @default(autoincrement())
   title       String
   short_name  String
   description String?
   dueDate     DateTime
-  priority    String
+  priority    Priority
   completed   Boolean  @default(false)
   course      Course   @relation(fields: [courseId], references: [id])
   courseId    Int

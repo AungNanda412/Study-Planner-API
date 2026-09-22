@@ -5,8 +5,28 @@ import {
   TopicUpdateInput,
 } from "../types/topicTypes";
 
-export async function getTopic() {
+export async function showTopicService({
+  courseId,
+  studentId,
+}: {
+  courseId: number;
+  studentId: number;
+}) {
+  const course = await prisma.course.findFirst({
+    where: {
+      id: courseId,
+      studentId,
+    },
+  });
+
+  if (!course) {
+    throw new Error("COURSE_NOT_FOUND");
+  }
+
   const topics = await prisma.topic.findMany({
+    where: {
+      courseId: courseId,
+    },
     orderBy: { name: "asc" },
   });
 

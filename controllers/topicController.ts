@@ -2,16 +2,25 @@ import { Request, Response } from "express";
 import {
   createTopicService,
   deleteTopicService,
-  getTopic,
+  showTopicService,
   updateTopicService,
 } from "../services/topicService";
-import { prisma } from "../lib/prisma";
 
 export async function showTopic(req: Request, res: Response) {
+  const { courseId } = req.params;
+  const studentId = res.locals.student.id;
   try {
-    const topics = await getTopic();
-    return res.status(209).json(topics);
-  } catch (error) {
+    const topics = await showTopicService({
+      courseId: Number(courseId),
+      studentId,
+    });
+    return res.status(200).json(topics);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return res.status(500).json({
+        msg: error.message,
+      });
+    }
     return res.status(500).json({
       msg: "Something went wrong",
     });
@@ -21,7 +30,7 @@ export async function showTopic(req: Request, res: Response) {
 export async function createTopic(req: Request, res: Response) {
   try {
     const { courseId } = req.params;
-    const { name,completed } = req.body;
+    const { name, completed } = req.body;
     const studentId = res.locals.student.id;
 
     if (!name) {
