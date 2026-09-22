@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import {
   createAssignmentService,
+  deleteAssignmentService,
   showAssignmentsService,
+  updateAssignmentService,
 } from "../services/assignmentService";
 
 export async function createAssignment(req: Request, res: Response) {
@@ -62,16 +64,51 @@ export async function showAssignment(req: Request, res: Response) {
   }
 }
 
-
 export async function deleteAssignment(req: Request, res: Response) {
   const { courseId, assignmentId } = req.params;
   const studentId = res.locals.student.id;
 
-  
+  try {
+    const deleteAssignment = await deleteAssignmentService({
+      assignmentId: Number(assignmentId),
+      courseId: Number(courseId),
+      studentId,
+    });
+    return res.status(200).json({ msg: "Assignment deleted successfully" });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return res.status(500).json({ msg: error.message });
+    }
+    return res.status(500).json({ msg: "Something went wrong" });
+  }
+}
+
+export async function updateAssignment(req: Request, res: Response) {
+  const { title, short_name, description, dueDate, priority, completed } =
+    req.body;
+  const { courseId, assignmentId } = req.params;
+  const studentId = res.locals.student.id;
 
   try {
+    const updateAssignment = await updateAssignmentService({
+      title,
+      short_name,
+      description,
+      dueDate,
+      priority,
+      completed,
+      assignmentId: Number(assignmentId),
+      courseId: Number(courseId),
+      studentId,
+    });
 
+    return res
+      .status(200)
+      .json({ msg: "Assignment updated successfully", updateAssignment });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return res.status(500).json({ msg: error.message });
+    }
+    return res.status(500).json({ msg: "Something went wrong" });
   }
-
-
 }

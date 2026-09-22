@@ -1,6 +1,11 @@
 import { showAssignment } from "../controllers/assignmentController";
 import { prisma } from "../lib/prisma";
-import { AssignmentCreateType } from "../types/assignmentTypes";
+import {
+  AssignmentCreateInput,
+  AssignmentDeleteInput,
+  AssignmentUpdateInput,
+} from "../types/assignmentTypes";
+import { TopicUpdateInput } from "../types/topicTypes";
 
 export async function createAssignmentService({
   title,
@@ -11,7 +16,7 @@ export async function createAssignmentService({
   completed,
   courseId,
   studentId,
-}: AssignmentCreateType) {
+}: AssignmentCreateInput) {
   const course = await prisma.course.findFirst({
     where: {
       id: courseId,
@@ -66,4 +71,89 @@ export async function showAssignmentsService({
   });
 
   return assignments;
+}
+
+export async function deleteAssignmentService({
+  assignmentId,
+  courseId,
+  studentId,
+}: AssignmentDeleteInput) {
+  const course = await prisma.course.findFirst({
+    where: {
+      id: courseId,
+      studentId,
+    },
+  });
+
+  if (!course) {
+    throw new Error("COURSE_NOT_FOUND");
+  }
+
+  const assignment = await prisma.assignment.findFirst({
+    where: {
+      id: assignmentId,
+      courseId,
+    },
+  });
+
+  if (!assignment) {
+    throw new Error("ASSIGNMENT_NOT_FOUND");
+  }
+
+  const deleteAssignment = await prisma.assignment.delete({
+    where: {
+      id: assignmentId,
+    },
+  });
+
+  return deleteAssignment;
+}
+
+export async function updateAssignmentService({
+  title,
+  short_name,
+  description,
+  dueDate,
+  priority,
+  completed,
+  assignmentId,
+  courseId,
+  studentId,
+}: AssignmentUpdateInput) {
+  const course = await prisma.course.findFirst({
+    where: {
+      id: courseId,
+      studentId,
+    },
+  });
+
+  if (!course) {
+    throw new Error("COURSE_NOT_FOUND");
+  }
+
+  const assignment = await prisma.assignment.findFirst({
+    where: {
+      id: assignmentId,
+    },
+  });
+
+  if (!assignment) {
+    throw new Error("ASSIGNMENT_NOT_FOUND");
+  }
+
+  const updateAssignment = await prisma.assignment.update({
+    where: {
+      id: assignmentId,
+    },
+    data: {
+      title,
+      short_name,
+      description,
+      dueDate,
+      priority,
+      completed,
+    },
+  });
+
+  return updateAssignment;
 }

@@ -14,7 +14,6 @@ export async function auth(
       const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
         id: number;
       };
-      console.log("DECODED:", decoded);
 
       if (decoded) {
         const student = await prisma.student.findFirst({
@@ -29,7 +28,6 @@ export async function auth(
             },
           },
         });
-        console.log("STUDENT:", student);
 
         res.locals.student = student;
         return next();
